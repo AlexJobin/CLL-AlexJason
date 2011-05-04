@@ -4,15 +4,17 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 TARGET = CLL-AlexJason
 TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    notes.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    notes.h
 
 FORMS    += mainwindow.ui

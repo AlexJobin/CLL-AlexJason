@@ -16,6 +16,7 @@
 #include <QPaintEvent>
 #include <QPen>
 #include <QBrush>
+#include "QKeyEvent"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -35,24 +36,62 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_btnChercherPartie_clicked()
 {
-    Notes un = new Notes(1);
-    ListeNotes.append(un);
-
+   ListeNotes.append(new Notes(1));
 }
 
 void MainWindow::paintEvent(QPaintEvent *)
  {
-    foreach (Notes, ListeNotes)
+    for(int i = 0; i< ListeNotes.length();i++)
     {
-    QPainter Note(this);
-    QBrush Brush(Qt::SolidPattern);
-    Brush.setColor(Qt::green);
-    Note.setBrush(Brush);
-    Note.drawEllipse(255,80,50,50);
+        Notes *n = ListeNotes.at(i);
+        QPainter Note(this);
+        QBrush Brush(Qt::SolidPattern);
+        int x = n->PosX;
+        int y = n->PosY;
+        Brush.setColor(Qt::white);
+        Note.drawEllipse(x,y-5,x+50,y+45);
+        if(n->Etat == false)
+         {
+            if(y+50 != 550)
+            {
+                switch(x)
+                {
+                    case 270: Brush.setColor(Qt::green); break;
+                    case 335: Brush.setColor(Qt::red);break;
+                    case 400: Brush.setColor(Qt::yellow);break;
+                    case 465: Brush.setColor(Qt::blue);break;
+                    case 530: Brush.setColor(Qt::darkYellow);break;
+                };
+                    Note.setBrush(Brush);
+                    Note.drawEllipse(x,y,x+50,y+50);
+            }
+            else
+                {
+                    ListeNotes.removeAt(i);
+                    //envoi raté
+                }
+         }
+         else
+         {
+             ListeNotes.removeAt(i);
+         }
+
     };
  }
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key()==Qt::Key_1)
+    {
+        qApp->quit();
+    }
+
+}
 
 void MainWindow::sltimerout()
 {
-
+    for(int i = 0; i< ListeNotes.length();i++)
+    {
+        Notes *n = ListeNotes.at(i);;
+        n->PosY+=5;
+    };
 }

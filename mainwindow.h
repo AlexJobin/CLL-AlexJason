@@ -33,12 +33,13 @@ public:
 private slots:
     void on_btnChercherPartie_clicked();
     void paintEvent(QPaintEvent *);
+    void keyPressEvent(QKeyEvent *);
     void sltimerout();
 
 private:
     Ui::MainWindow *ui;
     QTimer *timer;
-    QList<Notes> ListeNotes;
+    QList<Notes*> ListeNotes;
 
 };
 

@@ -62,7 +62,7 @@ void MainWindow::paintEvent(QPaintEvent *)
 
         if(n->Etat == false)
          {
-            if(y+50 != 660)
+            if(y+50 != 700)
             {
                 switch(x)
                 {
@@ -118,7 +118,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
             if(n->Etat == false && x == 270)
              {
-                if(y>= 550)
+                if(y>= 550 && y<= 650)
                 {
                     n->Etat=true;
                     repaint();
@@ -139,8 +139,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
             if(n->Etat == false && x == 335)
              {
-                if(y>= 550)
+                if(y>= 550 && y<= 650)
                 {
+                    qApp->beep();
                     n->Etat=true;
                     repaint();
                 }
@@ -159,7 +160,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
             if(n->Etat == false && x == 400)
              {
-                if(y>= 550)
+                if(y>= 550 && y<= 650)
                 {
 
                     n->Etat=true;
@@ -180,7 +181,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
             if(n->Etat == false && x == 465)
              {
-                if(y>= 550)
+                if(y>= 550 && y<= 650)
                 {
                     n->Etat=true;
                     repaint();
@@ -200,7 +201,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
             if(n->Etat == false && x == 530)
              {
-                if(y>= 550)
+                if(y>= 550 && y<= 650)
                 {
                     n->Etat=true;
                     repaint();

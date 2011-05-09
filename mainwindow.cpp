@@ -17,6 +17,7 @@
 #include <QPen>
 #include <QBrush>
 #include "QKeyEvent"
+#include "QSound"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -160,6 +161,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
              {
                 if(y>= 550)
                 {
+
                     n->Etat=true;
                     repaint();
                 }

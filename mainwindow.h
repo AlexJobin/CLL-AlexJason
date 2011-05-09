@@ -35,11 +35,14 @@ private slots:
     void paintEvent(QPaintEvent *);
     void keyPressEvent(QKeyEvent *);
     void sltimerout();
+    int randInt(int low, int high);
 
 private:
     Ui::MainWindow *ui;
     QTimer *timer;
     QList<Notes*> ListeNotes;
+    int VieLocal;
+    int VieExterne;
 
 };
 

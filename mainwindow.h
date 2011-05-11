@@ -36,16 +36,20 @@ private slots:
     void paintEvent(QPaintEvent *);
     void keyPressEvent(QKeyEvent *);
     void sltimerout();
+    void sltimerout2();
     int randInt(int low, int high);
     void NoteRecu(QByteArray);
+    void on_btnJouerLocal_clicked();
 
 private:
     Ui::MainWindow *ui;
     QTimer *timer;
+    QTimer *timer2;
     QList<Notes*> ListeNotes;
     int VieLocal;
     int VieExterne;
     thEcoute *EcouteNote;
+    bool Local;
 
 };
 

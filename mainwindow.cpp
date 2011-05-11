@@ -29,11 +29,14 @@ MainWindow::MainWindow(QWidget *parent) :
     timer = new QTimer(this);
     timer->setInterval(10);
     connect(timer, SIGNAL(timeout()), this, SLOT(sltimerout()));
+    timer2 = new QTimer(this);
+    timer2->setInterval(225);
+    connect(timer2, SIGNAL(timeout()), this, SLOT(sltimerout2()));
     EcouteNote = new thEcoute();
-    EcouteNote->etat = true;
     if(!connect(EcouteNote, SIGNAL(NouvelleNote(QByteArray)), this, SLOT(NoteRecu(QByteArray))))
         QMessageBox::information(this, "ERREUR", "CONNECT");
     timer->start();
+    Local = false;
 }
 
 MainWindow::~MainWindow()
@@ -46,6 +49,7 @@ void MainWindow::on_btnChercherPartie_clicked()
 {
    if(EcouteNote->etat == false)
    {
+       EcouteNote->etat = true;
        EcouteNote->start();
        ui->txtEtat->setText("connexion ...");
        ui->btnChercherPartie->setVisible(false);
@@ -88,10 +92,16 @@ void MainWindow::paintEvent(QPaintEvent *)
                 {
                     QVariant v;
                     ListeNotes.removeAt(i);
-                    VieLocal --;
-                    v.setValue(VieLocal);
-                    ui->txtVieLocal->setText(v.toString());
-                    EcouteNote->rate = true;
+                    if(VieLocal >=1)
+                    {
+                        VieLocal --;
+                        v.setValue(VieLocal);
+                        ui->txtVieLocal->setText(v.toString());
+                        EcouteNote->rate = true;
+                    }
+                    else
+                    ui->txtVieLocal->setText("0");
+
                 }
          }
          else
@@ -230,7 +240,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 void MainWindow::sltimerout()
 {
 
-
     for(int i = 0; i< ListeNotes.length();i++)
     {
         Notes *n = ListeNotes.at(i);;
@@ -256,7 +265,11 @@ void MainWindow::NoteRecu(QByteArray n)
     if(s[0] != 'F' && s[0] != 'V')
     {
         x = v.toInt();
-        ListeNotes.append(new Notes(x));
+        if(x>=0 && x<=0)
+        {
+            ui->txtEtat->setText("Partie en cours");
+            ListeNotes.append(new Notes(x));
+        }
     }
     else
     {
@@ -274,4 +287,30 @@ void MainWindow::NoteRecu(QByteArray n)
             ui->txtVieExterne->setText(v.toString());
         }
     }
+}
+
+void MainWindow::on_btnJouerLocal_clicked()
+{
+    ui->txtEtat->setText("non connecte");
+    if(!Local)
+    {
+        timer2->start();
+        Local = true;
+        ui->btnChercherPartie->setVisible(false);
+        ui->btnJouerLocal->setText("Jouer Reseau");
+    }
+    else
+    {
+        timer2->stop();
+        ListeNotes.clear();
+        Local = false;
+        VieLocal =10;
+        ui->txtVieLocal->setText("10");
+        ui->btnJouerLocal->setText("Jouer Local");
+        ui->btnChercherPartie->setVisible(true);
+    }
+}
+void MainWindow::sltimerout2()
+{
+    ListeNotes.append(new Notes(randInt(1,5)));
 }

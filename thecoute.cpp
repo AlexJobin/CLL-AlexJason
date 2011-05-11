@@ -3,6 +3,7 @@
 thEcoute::thEcoute()
 {
     rate = false;
+    etat = false;
 }
 
 void thEcoute::run()
@@ -10,14 +11,12 @@ void thEcoute::run()
     QTcpSocket sockClient;
     QByteArray NoteRecu;
 
-    sockClient.connectToHost("10.1.1.153", 0);
-    if(sockClient.waitForConnected(100))
-    {
+    sockClient.connectToHost("10.1.1.154", 65124);
+    if(sockClient.waitForConnected(1000))
         while(etat)
-        {
-            while (sockClient.waitForReadyRead(100))
-            {
-                NoteRecu.append(sockClient.read(sockClient.bytesAvailable()));
+         {
+             while (sockClient.waitForReadyRead(100))
+             NoteRecu.append(sockClient.read(sockClient.bytesAvailable()));
                 emit (NouvelleNote(NoteRecu));
                 NoteRecu.clear();
                 sockClient.write("#");
@@ -29,8 +28,7 @@ void thEcoute::run()
                     rate = false;
                 }
             }
-        }
-    }
     sockClient.disconnectFromHost();
     sockClient.close();
+
 }

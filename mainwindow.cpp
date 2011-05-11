@@ -29,6 +29,10 @@ MainWindow::MainWindow(QWidget *parent) :
     timer = new QTimer(this);
     timer->setInterval(10);
     connect(timer, SIGNAL(timeout()), this, SLOT(sltimerout()));
+    EcouteNote = new thEcoute();
+    EcouteNote->etat = true;
+    if(!connect(EcouteNote, SIGNAL(NouvelleNote(QByteArray)), this, SLOT(NoteRecu(QByteArray))))
+        QMessageBox::information(this, "ERREUR", "CONNECT");
     timer->start();
 }
 
@@ -40,7 +44,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_btnChercherPartie_clicked()
 {
-   ListeNotes.append(new Notes(randInt(1,5)));
+   if(EcouteNote->etat == false)
+   {
+       EcouteNote->start();
+       ui->txtEtat->setText("connexion ...");
+       ui->btnChercherPartie->setVisible(false);
+   }
 }
 
 void MainWindow::paintEvent(QPaintEvent *)
@@ -77,8 +86,12 @@ void MainWindow::paintEvent(QPaintEvent *)
             }
             else
                 {
+                    QVariant v;
                     ListeNotes.removeAt(i);
-                    //envoi raté
+                    VieLocal --;
+                    v.setValue(VieLocal);
+                    ui->txtVieLocal->setText(v.toString());
+                    EcouteNote->rate = true;
                 }
          }
          else
@@ -232,3 +245,33 @@ int MainWindow::randInt(int low, int high)
     {
         return qrand() % ((high + 1) - low) + low;
     }
+
+void MainWindow::NoteRecu(QByteArray n)
+{
+    QVariant v;
+    QString s;
+    int x;
+    v.setValue(n);
+    s = v.toString();
+    if(s[0] != 'F' && s[0] != 'V')
+    {
+        x = v.toInt();
+        ListeNotes.append(new Notes(x));
+    }
+    else
+    {
+        if(s[0] == 'F')
+        {
+           ui->txtVieLocal->setText("VICTOIRE");
+           ui->txtVieExterne->setText("MORT");
+           EcouteNote->etat =false;
+           ui->btnChercherPartie->setVisible(false);
+        }
+        if(s[0] == 'V')
+        {
+            VieExterne --;
+            v.setValue(VieExterne);
+            ui->txtVieExterne->setText(v.toString());
+        }
+    }
+}

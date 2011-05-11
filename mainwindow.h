@@ -17,6 +17,7 @@
 #include <QPen>
 #include <QBrush>
 #include <notes.h>
+#include "thecoute.h"
 
 namespace Ui {
     class MainWindow;
@@ -36,6 +37,7 @@ private slots:
     void keyPressEvent(QKeyEvent *);
     void sltimerout();
     int randInt(int low, int high);
+    void NoteRecu(QByteArray);
 
 private:
     Ui::MainWindow *ui;
@@ -43,6 +45,7 @@ private:
     QList<Notes*> ListeNotes;
     int VieLocal;
     int VieExterne;
+    thEcoute *EcouteNote;
 
 };
 

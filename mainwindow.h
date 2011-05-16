@@ -39,6 +39,7 @@ private slots:
     void sltimerout2();
     int randInt(int low, int high);
     void NoteRecu(QByteArray);
+    void ViePerdue();
     void on_btnJouerLocal_clicked();
 
 private:
@@ -48,6 +49,7 @@ private:
     QList<Notes*> ListeNotes;
     int VieLocal;
     int VieExterne;
+    bool Debut;
     thEcoute *EcouteNote;
     bool Local;
 

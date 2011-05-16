@@ -15,6 +15,7 @@ protected:
     void run();
 signals:
     void NouvelleNote(QByteArray);
+    void Vie();
 };
 
 #endif // THECOUTE_H

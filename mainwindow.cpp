@@ -33,10 +33,12 @@ MainWindow::MainWindow(QWidget *parent) :
     timer2->setInterval(225);
     connect(timer2, SIGNAL(timeout()), this, SLOT(sltimerout2()));
     EcouteNote = new thEcoute();
+    connect(EcouteNote, SIGNAL(Vie(int)), this, SLOT(ViePerdue(int)));
     if(!connect(EcouteNote, SIGNAL(NouvelleNote(QByteArray)), this, SLOT(NoteRecu(QByteArray))))
         QMessageBox::information(this, "ERREUR", "CONNECT");
     timer->start();
     Local = false;
+    Debut = true;
 }
 
 MainWindow::~MainWindow()
@@ -62,7 +64,8 @@ void MainWindow::paintEvent(QPaintEvent *)
     QPainter Note(this);
     QBrush Brush(Qt::SolidPattern);
     QPen Pen(Qt::SolidLine);
-
+    if(EcouteNote->isRunning() && ListeNotes.isEmpty() && VieLocal != 0 &&  !Debut)
+                ui->txtEtat->setText("VICTOIRE");
 
     for(int i = 0; i< ListeNotes.length();i++)
     {
@@ -100,12 +103,17 @@ void MainWindow::paintEvent(QPaintEvent *)
                         EcouteNote->rate = true;
                     }
                     else
-                    ui->txtVieLocal->setText("0");
+                    {
+                        EcouteNote->etat = false;
+                        ui->txtVieLocal->setText("0");
+                        ui->txtEtat->setText("PERDUE");
+                    }
 
                 }
          }
          else
          {
+
              ListeNotes.removeAt(i);
          }
     };
@@ -262,10 +270,11 @@ void MainWindow::NoteRecu(QByteArray n)
     int x;
     v.setValue(n);
     s = v.toString();
+    Debut =false;
     if(s[0] != 'F' && s[0] != 'V')
     {
         x = v.toInt();
-        if(x>=0 && x<=0)
+        if(x>=1 && x<=5)
         {
             ui->txtEtat->setText("Partie en cours");
             ListeNotes.append(new Notes(x));
@@ -276,7 +285,6 @@ void MainWindow::NoteRecu(QByteArray n)
         if(s[0] == 'F')
         {
            ui->txtVieLocal->setText("VICTOIRE");
-           ui->txtVieExterne->setText("MORT");
            EcouteNote->etat =false;
            ui->btnChercherPartie->setVisible(false);
         }
@@ -284,7 +292,6 @@ void MainWindow::NoteRecu(QByteArray n)
         {
             VieExterne --;
             v.setValue(VieExterne);
-            ui->txtVieExterne->setText(v.toString());
         }
     }
 }
@@ -313,4 +320,10 @@ void MainWindow::on_btnJouerLocal_clicked()
 void MainWindow::sltimerout2()
 {
     ListeNotes.append(new Notes(randInt(1,5)));
+}
+void MainWindow::ViePerdue()
+{
+    QVariant v;
+    VieExterne --;
+    v.setValue(VieExterne);
 }

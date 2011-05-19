@@ -35,6 +35,7 @@ private slots:
     void on_btnChercherPartie_clicked();
     void paintEvent(QPaintEvent *);
     void keyPressEvent(QKeyEvent *);
+    void keyReleaseEvent(QKeyEvent *);
     void sltimerout();
     void sltimerout2();
     int randInt(int low, int high);
@@ -44,14 +45,21 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    QTimer *timer;
-    QTimer *timer2;
-    QList<Notes*> ListeNotes;
-    int VieLocal;
-    int VieExterne;
-    bool Debut;
-    thEcoute *EcouteNote;
-    bool Local;
+    QTimer *m_timer;
+    QTimer *m_timer2;
+    QList<Notes*> m_ListeNotes;
+    int m_VieLocal;
+    int m_VieExterne;
+    bool m_Debut;
+    thEcoute *m_EcouteNote;
+    bool m_Local;
+    bool m_T1;
+    bool m_T2;
+    bool m_T3;
+    bool m_T4;
+    bool m_T5;
+
+
 
 };
 

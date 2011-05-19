@@ -21,18 +21,18 @@ void thEcoute::run()
                 if(NoteRecu.length() >1)
                     NoteRecu.remove(0,1);
                 v.setValue(NoteRecu);
-                if(v.toInt() >=1 && v.toInt() <=5)
+                if(v.toInt() >=1 && v.toInt() <=9)
                 {
                     emit (NouvelleNote(NoteRecu));
                     NoteRecu.clear();
                     sockClient.write("#");
                     sockClient.waitForBytesWritten();
-                    if(rate)
+                    /*if(rate)
                     {
                         sockClient.write("V");
                         sockClient.waitForBytesWritten();
                         rate = false;
-                    }
+                    }*/
                 }
                 if(v.toString() == "V")
                 {

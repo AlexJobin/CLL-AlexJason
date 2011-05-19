@@ -1425,7 +1425,7 @@
      <bool>false</bool>
     </property>
     <property name="text">
-     <string>10</string>
+     <string>25</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
